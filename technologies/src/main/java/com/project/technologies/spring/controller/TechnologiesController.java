@@ -3,6 +3,8 @@ package com.project.technologies.spring.controller;
 
 import com.project.technologies.spring.entity.Technologies;
 import com.project.technologies.spring.service.TechnologiesService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -40,12 +42,14 @@ public class TechnologiesController {
     @Autowired
     TechnologiesService technologiesService;
 
+    Logger Log = LoggerFactory.getLogger(getClass());
 
     @GetMapping(value = "/getSkill/{id}")
     public ResponseEntity<Technologies> getSkill(@PathVariable("id") long id) {
-        System.out.println("Fetching technology with id " + id);
+       Log.info("Fetching technology with id " + id);
         Technologies tech = technologiesService.findById(id);
         if (tech == null) {
+            Log.warn("Technology with tech_id " + id + " does not exists");
             return new ResponseEntity<Technologies>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<Technologies>(tech, HttpStatus.OK);
@@ -53,9 +57,10 @@ public class TechnologiesController {
 
     @GetMapping(value = "/searchSkill/{skillName}")
     public ResponseEntity<List<Technologies>> searchSkill(@PathVariable("skillName") String skillName) {
-        System.out.println("Fetching technology with name " + skillName);
+        Log.info("Fetching technology with name " + skillName);
         List<Technologies> tech = technologiesService.findByName(skillName);
         if (tech == null) {
+            Log.warn("Technology with name " + skillName + " does not exists");
             return new ResponseEntity<List<Technologies>>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<List<Technologies>>(tech, HttpStatus.OK);
@@ -65,14 +70,16 @@ public class TechnologiesController {
 
     @PostMapping(value="/create")
     public String createUser(@RequestBody Technologies tech){
-        System.out.println("Creating Tech: "+tech.getName());
+        Log.info("Creating Tech: "+tech.getName());
         technologiesService.createTechnology(tech);
+        Log.info("Succesfully created " + tech.getName());
         return "Succesfully created " + tech.getName();
     }
 
 
     @GetMapping(value="/get", headers="Accept=application/json")
     public List<Technologies> getAllUser() {
+        Log.info("Getting all technologies.");
         List<Technologies> technologies = technologiesService.getTech();
         List<Technologies> newTech = new LinkedList<>();
         for(Technologies tech : technologies){
@@ -99,6 +106,7 @@ public class TechnologiesController {
     {
         Technologies tech = technologiesService.findById(ctech.getId());
         if (tech == null) {
+            Log.warn("Technology with tech_id " + ctech.getId() + " does not exists");
             return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
         }
         technologiesService.update(ctech);
@@ -110,6 +118,7 @@ public class TechnologiesController {
     {
         Technologies tech = technologiesService.findById(s.getId());
         if (tech == null) {
+            Log.warn("Technology with tech_id " + s.getId() + " does not exists");
             return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
         }
         technologiesService.update(s.getId(),s.isStatus());
@@ -118,13 +127,14 @@ public class TechnologiesController {
 
     @DeleteMapping(value="/delete/{id}")
     public ResponseEntity<Technologies> deleteUser(@PathVariable("id") long id){
-        System.out.println("Fetching technology with id " + id);
+        Log.info("Fetching technology with id " + id);
         Technologies tech = technologiesService.findById(id);
         if (tech == null) {
+            Log.warn("Technology with tech_id " + id + " does not exists");
             return new ResponseEntity<Technologies>(HttpStatus.NOT_FOUND);
         }
         technologiesService.delete(id);
-        System.out.println("Successfully deleted technology with id " + id);
+        Log.info("Successfully deleted technology with id " + id);
         return new ResponseEntity<Technologies>(HttpStatus.NO_CONTENT);
     }
 

@@ -22,7 +22,7 @@ public interface TrainingsService {
     public List<Trainings> getInprogressTrainings();
     public List<Trainings> getInprogressTrainingsUser(long id);
     public List<Trainings> getInprogressTrainingsMentor(long id);
-
+    Trainings finalizeTraining(Long id);
     Trainings approveTraining(Long id);
 }
 

@@ -8,6 +8,8 @@ import java.util.List;
 
 
 public interface TrainingsRepository extends PagingAndSortingRepository<Trainings,Long> {
+    List<Trainings> findByStatusAndMid(String status,long mentor_id);
+
     @Query(value = "SELECT * FROM Trainings where Status = 4", nativeQuery = true)
     public List<Trainings> getCompleteTrainings();
 

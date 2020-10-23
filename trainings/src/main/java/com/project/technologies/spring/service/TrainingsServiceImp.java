@@ -100,4 +100,14 @@ public class TrainingsServiceImp implements TrainingsService {
     }
 
 
+    public Trainings finalizeTraining(Long id){
+        Trainings training = trainingsRepository.findById(id).get();
+        training.setStatus(Trainings.Status.INPROGRESS);
+        training.setAmount(2000);
+        trainingsRepository.save(training);
+        return training;
+    }
+
+
+
 }
