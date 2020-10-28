@@ -15,7 +15,7 @@ public interface TrainingsService {
     public void delete(long id);
     public List<Trainings> getAllTrainings(Integer pageNo, Integer pageSize, String sortBy);
     public void updateAmount(long id, float amt);
-    public void updateEndDate(long id, Date endDate);
+    public void updateEndDate(long id, java.time.LocalDate endDate);
     public List<Trainings> getCompleteTrainings();
     public List<Trainings> getCompleteTrainingsUser(long id);
     public List<Trainings> getCompleteTrainingsMentor(long id);

@@ -22,12 +22,12 @@ server:
 zuul:
   prefix:
   routes:
+    usersService:
+      path: /user/**
+      service-id: USERSSERVICE
     mentorService:
       path: /mentor/**
       service-id: MENTORSERVICE
-    userService:
-      prefix: /user/**
-      service-id : USERSERVICE
     trainingsService:
       path: /training/**
       service-id : TRAININGSSERVICE

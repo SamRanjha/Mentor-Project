@@ -16,7 +16,6 @@ public class User {
     private String username;
 
     @Column
-    @JsonIgnore
     private String password;
 
     @Column
@@ -116,8 +115,12 @@ public class User {
         return active;
     }
 
+    public void setActive(String active) {
+        this.active = Boolean.valueOf(active);
+    }
+
     public void setActive(boolean active) {
-        this.active = active;
+        this.active = Boolean.valueOf(active);
     }
 
 

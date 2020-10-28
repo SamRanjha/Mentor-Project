@@ -67,7 +67,6 @@ public class TechnologiesController {
     }
 
 
-
     @PostMapping(value="/create")
     public String createUser(@RequestBody Technologies tech){
         Log.info("Creating Tech: "+tech.getName());

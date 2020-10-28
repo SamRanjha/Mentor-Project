@@ -63,7 +63,6 @@ public class MentorController {
 
         ResponseEntity<User>resultUser = restTemplate.getForEntity(uri, User.class);
         u = resultUser.getBody();
-        u = resultUser.getBody();
         if (u == null) {
             Log.warn("Username for mentor is null");
         }
@@ -73,19 +72,21 @@ public class MentorController {
         detail.setLastname(u.getLastname());
         detail.setMentor(mentor);
 
-        if (mentor == null) {
-            return new ResponseEntity<Details>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<Details>(detail, HttpStatus.OK);
 
     }
 
 
-    @GetMapping(value="/getMentorSkills/{mid}")
-    public List<MentorSkills> getMentorSkills(@PathVariable("mid") long mid) {
-        Mentor mentor = mentorService.findById(mid);
-        return mentorService.getMentorSkills(mentor);
-    }
+//    @GetMapping(value="/getMentorSkills/{mid}")
+//    public ResponseEntity<MentorSkills> getMentorSkills(@PathVariable("mid") long mid) {
+//        Mentor mentor = mentorService.findById(mid);
+//        if(mentor == null){
+//            Log.error("Mentor does not exists");
+//            return new ResponseEntity<MentorSkills> (HttpStatus.NOT_FOUND);
+//        }
+//       // MentorSkills m = mentorService.getMentorSkills(mentor);
+//        return new ResponseEntity<MentorSkills>(, HttpStatus.OK);
+//    }
 
     @PostMapping(value = "/createMentor")
     public String createMentor(@RequestBody Mentor mentor){

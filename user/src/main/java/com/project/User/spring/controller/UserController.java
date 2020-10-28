@@ -41,6 +41,29 @@ public class UserController {
         return "Succesfully created " + user.getId();
     }
 
+    @GetMapping(value = "/getRole/{id}")
+    public ResponseEntity<String> getRole(@PathVariable("id") long id){
+        log.info("Fetching User with id " + id);
+        User user = userService.findById(id);
+        if (user == null) {
+            log.error("User with id: " + id + " does not exists.");
+            return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+        }
+        log.info("Role of user with id " + id + " is " + user.getType());
+        return new ResponseEntity<String>(user.getType(),HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getUserName/{id}")
+    public ResponseEntity<String> getUserName(@PathVariable("id") long id){
+        log.info("Fetching User with id " + id);
+        User user = userService.findById(id);
+        if (user == null) {
+            log.error("User with id: " + id + " does not exists.");
+            return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+        }
+        log.info("Role of user with id " + id + " is " + user.getType());
+        return new ResponseEntity<String>(user.getUsername(),HttpStatus.OK);
+    }
 
     @PutMapping(value="/update")
     public ResponseEntity<String> updateUser(@RequestBody User cuser)
@@ -70,14 +93,14 @@ public class UserController {
 
     @DeleteMapping(value="/delete/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable("id") long id){
-        log.info("Fetching technology with id " + id);
-        User tech = userService.findById(id);
-        if (tech == null) {
+        log.info("Fetching User with id " + id);
+        User user = userService.findById(id);
+        if (user == null) {
             log.error("User with id: " + id + " does not exists.");
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         }
         userService.delete(id);
-        log.info("Successfully deleted technology with id " + id);
+        log.info("Successfully deleted User with id " + id);
         return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
     }
 

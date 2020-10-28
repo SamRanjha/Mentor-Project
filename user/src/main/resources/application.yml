@@ -1,7 +1,7 @@
 #Name of the application
 spring:
   application:
-    name: userService
+    name: usersService
 
 #Eureka server url for registering
 #This is eureka client
@@ -11,7 +11,7 @@ eureka:
     fetch-registry: true
     serviceUrl:
       defaultZone: http://localhost:9091/eureka/
-#register url to server    
+#register url to server
 
 instance:
   hostname: localhost

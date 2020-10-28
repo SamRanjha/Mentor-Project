@@ -5,6 +5,8 @@ import org.hibernate.query.criteria.internal.expression.function.CurrentDateFunc
 
 import javax.persistence.*;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Entity
@@ -37,16 +39,16 @@ public class Trainings {
     private int rating;
 
     @Column
-    private Date start_date;
+    private java.time.LocalDate start_date;
 
     @Column
-    private Date end_date;
+    private java.time.LocalDate end_date;
 
     @Column
-    private Time start_time;
+    private java.time.LocalTime start_time;
 
     @Column
-    private Time end_time;
+    private java.time.LocalTime  end_time;
 
     @Column
     private float amount;
@@ -118,35 +120,35 @@ public class Trainings {
         this.rating = rating;
     }
 
-    public Date getStart_date() {
+    public LocalDate getStart_date() {
         return start_date;
     }
 
-    public void setStart_date(Date start_date) {
+    public void setStart_date(LocalDate start_date) {
         this.start_date = start_date;
     }
 
-    public Date getEnd_date() {
+    public LocalDate getEnd_date() {
         return end_date;
     }
 
-    public void setEnd_date(Date end_date) {
+    public void setEnd_date(LocalDate end_date) {
         this.end_date = end_date;
     }
 
-    public Time getStart_time() {
+    public LocalTime getStart_time() {
         return start_time;
     }
 
-    public void setStart_time(Time start_time) {
+    public void setStart_time(LocalTime start_time) {
         this.start_time = start_time;
     }
 
-    public Time getEnd_time() {
+    public LocalTime getEnd_time() {
         return end_time;
     }
 
-    public void setEnd_time(Time end_time) {
+    public void setEnd_time(LocalTime end_time) {
         this.end_time = end_time;
     }
 
