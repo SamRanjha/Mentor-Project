@@ -15,10 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import javax.xml.soap.Detail;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.LinkedList;
 import java.util.List;
 
 
@@ -77,21 +75,21 @@ public class MentorController {
     }
 
 
-//    @GetMapping(value="/getMentorSkills/{mid}")
-//    public ResponseEntity<MentorSkills> getMentorSkills(@PathVariable("mid") long mid) {
-//        Mentor mentor = mentorService.findById(mid);
-//        if(mentor == null){
-//            Log.error("Mentor does not exists");
-//            return new ResponseEntity<MentorSkills> (HttpStatus.NOT_FOUND);
-//        }
-//       // MentorSkills m = mentorService.getMentorSkills(mentor);
-//        return new ResponseEntity<MentorSkills>(, HttpStatus.OK);
-//    }
+    @GetMapping(value="/getMentorSkills/{mid}")
+    public ResponseEntity<List<MentorSkills>> getMentorSkills(@PathVariable("mid") long mid) {
+        Mentor mentor = mentorService.findById(mid);
+        if(mentor == null){
+            Log.error("Mentor does not exists");
+            return new ResponseEntity<List<MentorSkills>> (HttpStatus.NOT_FOUND);
+        }
+        List<MentorSkills> list = mentorService.getMentorSkills(mentor);
+        return new ResponseEntity<List<MentorSkills>>(list, HttpStatus.OK);
+    }
 
     @PostMapping(value = "/createMentor")
-    public String createMentor(@RequestBody Mentor mentor){
+    public ResponseEntity<String> createMentor(@RequestBody Mentor mentor){
         mentorService.createMentor(mentor);
-        return "Succesfully created Mentor with id:" + mentor.getMid();
+        return new ResponseEntity<String>("Succesfully created Mentor with id:" + mentor.getMid(),HttpStatus.OK);
     }
 
     @PostMapping(value = "/createSkill/{mid}")
