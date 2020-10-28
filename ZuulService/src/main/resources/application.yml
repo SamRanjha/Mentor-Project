@@ -34,6 +34,9 @@ zuul:
     technologiesService:
       path: /tech/**
       service-id: TECHNOLOGIESSERVICE
+    authenticationService:
+      path: /authenticate/**
+      service-id: AUTHENTICATIONSERVICE
 #    mentorSkillCalendarService:
 #      path: /skillMentService/**
 #      service-id: MENTORSKILLCALENDARSERVICE
