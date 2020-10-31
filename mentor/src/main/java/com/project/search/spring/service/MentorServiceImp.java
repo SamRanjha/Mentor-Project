@@ -50,14 +50,20 @@ public class MentorServiceImp implements MentorService {
         return tech;
     }
 
-    public List<Details> searchResults(String skill) {
+    public List<Details> searchResults(String skills) {
+        String[] arr = skills.split("_");
+        String skill = "";
+        for(int i = 0; i < arr.length; i++){
+            skill += arr[i] + " ";
+        }
+        skill = skill.trim();
         Log.info("Searching for skill: " + skill);
         RestTemplate restTemplate = new RestTemplate();
         String url = "";
         URI uri = null;
 
         // getSkill from Technology
-        url = "http://localhost:9011/searchSkill/" + skill;
+        url = "http://localhost:9011/searchSkill/" + skills;
         try {
             uri = new URI(url);
         } catch (URISyntaxException e) {
@@ -66,10 +72,12 @@ public class MentorServiceImp implements MentorService {
         ResponseEntity<List> result = restTemplate.getForEntity(uri, List.class);
         List<HashMap<String, Object>> resultBody = result.getBody();
         List<Technologies> technologies = new LinkedList<>();
+
         for (Object obj : resultBody) {
             HashMap<String, Object> map = (HashMap<String, Object>) obj;
             technologies.add(convertToTechnologies(map));
         }
+
 
         ArrayList<Long> skillID = new ArrayList<Long>();
         for (Technologies tech : technologies) {

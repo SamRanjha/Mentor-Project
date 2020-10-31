@@ -1,0 +1,25 @@
+{
+    "id" : 1,
+    "username" : "SRanjha",
+    "password" : "sameer",
+    "firstname" : "Sameer",
+    "lastname" : "Ranjha",
+    "contact" : "8700272575",
+    "reg_date" : "2020-10-17",
+    "reg_code" : "1M",
+    "type" : "Mentor"
+}
+
+
+{
+    "id" : 2,
+    "username" : "sam",
+    "password" : "sameer",
+    "firstname" : "Sam",
+    "lastname" : "Ranjha",
+    "contact" : "8700272575",
+    "reg_date" : "2020-10-19",
+    "reg_code" : "2U",
+    "type" : "User",
+    "active" : true
+}

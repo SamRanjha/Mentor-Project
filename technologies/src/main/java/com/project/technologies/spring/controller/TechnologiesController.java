@@ -56,11 +56,17 @@ public class TechnologiesController {
     }
 
     @GetMapping(value = "/searchSkill/{skillName}")
-    public ResponseEntity<List<Technologies>> searchSkill(@PathVariable("skillName") String skillName) {
-        Log.info("Fetching technology with name " + skillName);
-        List<Technologies> tech = technologiesService.findByName(skillName);
+    public ResponseEntity<List<Technologies>> searchSkill(@PathVariable("skillName") String skill) {
+        String[] arr = skill.split("_");
+        String skillsearch = "";
+        for(int i = 0; i < arr.length; i++){
+            skillsearch += arr[i] + " ";
+        }
+        skillsearch = skillsearch.trim();
+        Log.info("Fetching technology with name " + skillsearch);
+        List<Technologies> tech = technologiesService.findByName(skillsearch);
         if (tech == null) {
-            Log.warn("Technology with name " + skillName + " does not exists");
+            Log.warn("Technology with name " + skillsearch + " does not exists");
             return new ResponseEntity<List<Technologies>>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<List<Technologies>>(tech, HttpStatus.OK);

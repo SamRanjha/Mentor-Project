@@ -4,6 +4,7 @@ package com.project.User.spring.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 @Entity
@@ -13,15 +14,19 @@ public class User {
     private long id;
 
     @Column
+    @NotNull(message = "User name is required")
     private String username;
 
     @Column
+    @NotNull
     private String password;
 
     @Column
+    @NotNull(message = "First name is required")
     private String firstname;
 
     @Column
+    @NotNull(message = "Last name is required")
     private String lastname;
 
     @Column

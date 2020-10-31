@@ -8,7 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 class Status{
     long id;
@@ -30,15 +36,16 @@ public class UserController {
             log.error("User with id: " + id + " does not exists.");
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         }
+        user.setPassword("");
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
 
     @PostMapping(value="/signup")
-    public String createUser(@RequestBody User user){
+    public ResponseEntity<String> createUser(@RequestBody @Valid User user){
         log.info("Creating User with id " + user.getId());
         userService.createUser(user);
-        return "Succesfully created " + user.getId();
+        return ResponseEntity.ok("Succesfully created " + user.getId());
     }
 
     @GetMapping(value = "/getRole/{id}")
@@ -63,6 +70,12 @@ public class UserController {
         }
         log.info("Role of user with id " + id + " is " + user.getType());
         return new ResponseEntity<String>(user.getUsername(),HttpStatus.OK);
+    }
+
+    @GetMapping(value="/get", headers="Accept=application/json")
+    public List<User> getAllUSers() {
+        List<User> users = userService.getUsers();
+        return users;
     }
 
     @PutMapping(value="/update")
@@ -102,6 +115,17 @@ public class UserController {
         userService.delete(id);
         log.info("Successfully deleted User with id " + id);
         return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+
+        ex.getBindingResult().getFieldErrors().forEach(error ->
+                errors.put(error.getField(), error.getDefaultMessage()));
+
+        return errors;
     }
 
 

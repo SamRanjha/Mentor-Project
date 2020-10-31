@@ -1,6 +1,7 @@
 package com.project.technologies.spring.controller;
 
 import com.project.technologies.spring.entity.Trainings;
+import com.project.technologies.spring.service.EmailServiceImpl;
 import com.project.technologies.spring.service.TrainingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -113,44 +114,51 @@ public class TrainingsController {
 
     }
 
+    @GetMapping(value="/send")
+    public String sendEmail(long mid, long sid){
+        EmailServiceImpl emailService = new EmailServiceImpl();
+        emailService.sendEmail(mid,sid);
+        return "done";
+
+    }
+
     @PostMapping(value="/approveTraining")
     public Trainings approveTraining(@RequestHeader("Authorization") String jwttoken,@RequestParam Long id){
         log.info("Approving training for training_id " + id );
         log.info("Fetching training with id " + id);
         Trainings training = trainingsService.findById(id);
-        long mid = training.getMid();
-        Token t = new Token();
-        t.token = jwttoken;
-        boolean isMentor = validateMentor(t,mid);
-        if(!isMentor) {
-            log.info("Mentor is invalid");
-            return null;
-        }
+//        long mid = training.getMid();
+//        Token t = new Token();
+//        t.token = jwttoken;
+//        boolean isMentor = validateMentor(t,mid);
+//        if(!isMentor) {
+//            log.info("Mentor is invalid");
+//            return null;
+//        }
 
         if (training == null) {
             log.error("No training with id: " + id +" exists");
         }
+        sendEmail(training.getMid(),training.getSid());
         return trainingsService.approveTraining(id);
     }
 
 
     @PostMapping(value="/finalizeTraining")
-    public Trainings finalizeTraining(@RequestHeader("Authorization") String jwttoken,@RequestParam Long id){
+    public ResponseEntity<Trainings> finalizeTraining(@RequestParam Long id) throws Exception{
         log.info("Approving training for training_id " + id );
         log.info("Fetching training with id " + id);
         Trainings training = trainingsService.findById(id);
         long uid = training.getUid();
-        Token t = new Token();
-        t.token = jwttoken;
-        boolean isUser = validateUser(t,uid);
-        if(!isUser) {
-            log.info("User is invalid");
-            return null;
-        }
         if (training == null) {
             log.error("No training with id: " + id +" exists");
         }
-        return trainingsService.finalizeTraining(id);
+        Trainings responseTraining =  trainingsService.finalizeTraining(id);
+        String msg = "Training finalized by user " + responseTraining.getUid() + " for skill with id " + responseTraining.getSid() + " for mentor with id " + responseTraining.getMid();
+        log.info(msg);
+        ProducerEg.sendMessage(msg);
+        return new ResponseEntity<Trainings>(responseTraining,HttpStatus.OK);
+
     }
 
 

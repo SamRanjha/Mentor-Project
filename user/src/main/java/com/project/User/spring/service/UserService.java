@@ -11,6 +11,7 @@ public interface UserService {
     public User findById(long id);
     public User update(User tech);
     public void delete(long id);
+    public List<User> getUsers();
     public User update(long id, boolean status);
 
 }
